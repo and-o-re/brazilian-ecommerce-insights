@@ -1,0 +1,45 @@
+CREATE TABLE pedidos_clientes AS 
+SELECT
+	c.customer_id,
+    c.customer_unique,
+    c.customer_city,
+    c.customer_state,
+    o.order_id,
+    o.customer_id,
+    o.order_status,
+    o.order_purchase_t,
+    o.order_approved_a,
+    o.order_delivered_6,
+    o.order_estimated
+FROM olist_orders_dataset AS o
+LEFT JOIN olist_customers_dataset AS c
+    ON o.customer_id = c.customer_id;
+    
+    
+CREATE TABLE analise_regional_clientes AS
+SELECT
+	pc.order_id,
+    pc.customer_unique,
+    pc.customer_city,
+    pc.customer_state,
+    pc.order_status,
+    pc.order_purchase_t,
+    pc.order_delivered_6,
+    pc.order_estimated,
+    oi.order_item_id,
+    oi.product_id,
+    oi.seller_id,
+    oi.price,
+    oi.freight_value
+    FROM pedidos_clientes AS pc
+    LEFT JOIN olist_order_items_dataset AS oi
+    ON pc.order_id = oi.order_id;
+    
+CREATE TABLE analise_regional_vendedores AS
+SELECT
+	ar.*,
+    s.seller_city,
+    s.seller_state
+FROM analise_regional_clientes AS ar
+LEFT JOIN olist_sellers_dataset AS s
+    ON ar.seller_id = s.seller_id;
