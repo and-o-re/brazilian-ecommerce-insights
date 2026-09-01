@@ -1,0 +1,14 @@
+SELECT 
+    o.order_id,
+    o.order_purchase_timestamp,
+    o.order_delivered_customer_date,
+    o.order_estimated_delivery_date,
+    c.customer_state AS uf_cliente,
+    p.product_category_name AS categoria,
+    s.seller_id
+FROM orders AS o
+JOIN customers AS c ON o.customer_id = c.customer_id
+JOIN order_items AS i ON o.order_id = i.order_id
+JOIN products AS p ON i.product_id = p.product_id
+JOIN sellers AS s ON i.seller_id = s.seller_id
+WHERE o.order_status = 'delivered';
